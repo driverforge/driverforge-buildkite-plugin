@@ -1,0 +1,31 @@
+name: CI
+
+# Public-mirror CI for the Buildkite plugin. Published from anvil-ci's
+# anvil-buildkite-plugin/.github/workflows/ — runs on the mirror via GitHub
+# Actions (we don't operate Buildkite). The official plugin-linter and
+# plugin-tester run in Docker, which works fine on GitHub runners.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shellcheck
+        run: shellcheck hooks/* lib/*.bash
+      - name: Plugin lint
+        run: docker run --rm -v "$PWD:/plugin:ro" buildkite/plugin-linter --id driverforge/anvil
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: BATS hook tests
+        run: docker run --rm -v "$PWD:/plugin:ro" buildkite/plugin-tester

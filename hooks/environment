@@ -1,0 +1,13 @@
+#!/bin/bash
+# Always install the Anvil CLI onto PATH, regardless of mode. Sourced by the
+# agent, so the exported PATH persists into the command phase (and the step's own
+# command). The `command` hook then either runs a configured target or the step's
+# own command.
+set -euo pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# shellcheck source=lib/anvil-install.bash disable=SC1091
+source "${DIR}/lib/anvil-install.bash"
+
+anvil_install

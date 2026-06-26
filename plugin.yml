@@ -1,0 +1,40 @@
+name: Anvil
+description: Install the Anvil CLI onto the agent (on PATH) and optionally run a target (build, …).
+author: https://github.com/driverforge
+requirements:
+  - bash
+  - curl
+  - tar
+configuration:
+  properties:
+    version:
+      type: string
+      description: CLI version — pinned (e.g. "1.4.0") or "latest".
+    command:
+      type: string
+      description: Target to run after install (e.g. build). Omit for setup-only.
+    project-dir:
+      type: string
+    configuration:
+      type: string
+    increment:
+      type: string
+      description: "major | minor | patch, or \"true\" for the CLI default."
+    encrypt:
+      type: [string, boolean]
+      description: Script encryption — true | false | <mode>.
+    sourcemap:
+      type: boolean
+    unpack:
+      type: boolean
+    deploy:
+      type: boolean
+    sync:
+      type: boolean
+    args:
+      type: string
+      description: Extra raw args appended to the invocation (escape hatch).
+    cache-dir:
+      type: string
+      description: Per-agent download cache dir (default ~/.cache/anvil-buildkite).
+  additionalProperties: false

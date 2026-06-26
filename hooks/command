@@ -1,0 +1,22 @@
+#!/bin/bash
+# Run phase. Two modes:
+#   - command configured  -> run `anvil <command>` with the mapped flags.
+#   - no command          -> setup-only; run the step's own command (anvil is
+#                            already on PATH from the environment hook).
+#
+# A plugin command hook replaces the step's default command phase, so in
+# setup-only mode we re-run BUILDKITE_COMMAND ourselves to honour the step.
+set -euo pipefail
+
+DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# shellcheck source=lib/anvil-run.bash disable=SC1091
+source "${DIR}/lib/anvil-run.bash"
+
+if [ -n "${BUILDKITE_PLUGIN_ANVIL_COMMAND:-}" ]; then
+  anvil_run
+elif [ -n "${BUILDKITE_COMMAND:-}" ]; then
+  eval "${BUILDKITE_COMMAND}"
+else
+  echo "anvil plugin: no 'command' configured and the step has no command — nothing to run" >&2
+fi
