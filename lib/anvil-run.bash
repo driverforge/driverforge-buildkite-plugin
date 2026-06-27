@@ -28,11 +28,16 @@ anvil_build_args() {
     *) ANVIL_ARGS+=("--increment=${BUILDKITE_PLUGIN_ANVIL_INCREMENT}") ;;
   esac
 
-  # encrypt is tri-state: "true" -> bare flag; a mode value -> --encrypt=<value>
+  # encrypt: omit = leave driver.xml as authored; true = force on; false = force off.
+  # The CLI's --encrypt is a boolean (--encrypt / --encrypt=false), not a mode value.
   case "${BUILDKITE_PLUGIN_ANVIL_ENCRYPT:-}" in
-    "" | false | no) : ;;
-    true | yes) ANVIL_ARGS+=(--encrypt) ;;
-    *) ANVIL_ARGS+=("--encrypt=${BUILDKITE_PLUGIN_ANVIL_ENCRYPT}") ;;
+    "") : ;;
+    true | yes | 1) ANVIL_ARGS+=(--encrypt) ;;
+    false | no | 0) ANVIL_ARGS+=(--encrypt=false) ;;
+    *)
+      printf 'anvil plugin: %s\n' "encrypt must be true or false (got '${BUILDKITE_PLUGIN_ANVIL_ENCRYPT}')" >&2
+      exit 1
+      ;;
   esac
 
   if anvil__is_true "${BUILDKITE_PLUGIN_ANVIL_SOURCEMAP:-}"; then ANVIL_ARGS+=(--sourcemap); fi

@@ -21,8 +21,8 @@ configuration:
       type: string
       description: "major | minor | patch, or \"true\" for the CLI default."
     encrypt:
-      type: [string, boolean]
-      description: Script encryption — true | false | <mode>.
+      type: boolean
+      description: Force script encryption on (true) or off (false); omit to keep the driver's authored setting.
     sourcemap:
       type: boolean
     unpack:
