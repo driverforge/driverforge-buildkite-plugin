@@ -15,7 +15,7 @@ labels: bug
 
 **Environment**
 - Plugin version (e.g. `v1.0.0`):
-- Anvil CLI version requested (`latest` or pinned):
+- Driverforge CLI version requested (`latest` or pinned):
 - Agent OS / arch:
 
 **Logs**

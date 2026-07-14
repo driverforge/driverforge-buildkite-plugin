@@ -1,12 +1,12 @@
 #!/bin/bash
-# Install the Anvil CLI onto the agent and export it onto PATH. Resolves "latest"
+# Install the Driverforge CLI onto the agent and export it onto PATH. Resolves "latest"
 # through the release manifest, verifies the archive checksum, and caches the
 # binary per-agent (keyed by version) so repeat builds don't re-download.
 #
 # LOCKSTEP: the detect / resolve / download / checksum logic here is kept
 # identical to anvil-github-action/scripts/install.sh. Change both together.
 
-ANVIL_RELEASES_BASE="https://releases.driverforge.com/anvil-releases/anvil-cli"
+DRIVERFORGE_RELEASES_BASE="https://releases.driverforge.com/driverforge-releases/driverforge-cli"
 
 anvil__log() { printf '%s\n' "$*" >&2; }
 anvil__die() {
@@ -46,8 +46,8 @@ anvil__resolve_version() {
     return
   fi
   local manifest
-  manifest="$(curl -fsSL "${ANVIL_RELEASES_BASE}/latest/manifest.json")" \
-    || anvil__die "could not fetch latest manifest from ${ANVIL_RELEASES_BASE}/latest/manifest.json"
+  manifest="$(curl -fsSL "${DRIVERFORGE_RELEASES_BASE}/latest/manifest.json")" \
+    || anvil__die "could not fetch latest manifest from ${DRIVERFORGE_RELEASES_BASE}/latest/manifest.json"
   local v
   if command -v jq >/dev/null 2>&1; then
     v="$(printf '%s' "$manifest" | jq -r '.version')"
@@ -66,15 +66,15 @@ anvil_install() {
   arch="$(anvil__detect_arch)"
   version="$(anvil__resolve_version "${BUILDKITE_PLUGIN_ANVIL_VERSION:-latest}")"
 
-  local base="${ANVIL_RELEASES_BASE}/v${version}"
-  local archive="anvil_${version}_${os}_${arch}.tar.gz"
+  local base="${DRIVERFORGE_RELEASES_BASE}/v${version}"
+  local archive="driverforge_${version}_${os}_${arch}.tar.gz"
 
-  local cache_root="${BUILDKITE_PLUGIN_ANVIL_CACHE_DIR:-${HOME}/.cache/anvil-buildkite}"
-  local dest="${cache_root}/anvil/${version}/${arch}"
-  local bin="${dest}/anvil"
+  local cache_root="${BUILDKITE_PLUGIN_ANVIL_CACHE_DIR:-${HOME}/.cache/driverforge-buildkite}"
+  local dest="${cache_root}/driverforge/${version}/${arch}"
+  local bin="${dest}/driverforge"
 
   if [ ! -x "$bin" ]; then
-    anvil__log "Installing anvil ${version} (${os}/${arch})"
+    anvil__log "Installing driverforge ${version} (${os}/${arch})"
     local tmp
     tmp="$(mktemp -d)"
 
@@ -90,14 +90,14 @@ anvil_install() {
     [ "$want" = "$got" ] || anvil__die "checksum mismatch for ${archive}: expected ${want}, got ${got}"
 
     tar -xzf "${tmp}/${archive}" -C "$tmp"
-    [ -f "${tmp}/anvil" ] || anvil__die "archive did not contain an 'anvil' binary"
+    [ -f "${tmp}/driverforge" ] || anvil__die "archive did not contain a 'driverforge' binary"
     mkdir -p "$dest"
-    install -m 0755 "${tmp}/anvil" "$bin"
+    install -m 0755 "${tmp}/driverforge" "$bin"
     rm -rf "$tmp"
   else
-    anvil__log "Reusing cached anvil ${version} (${os}/${arch})"
+    anvil__log "Reusing cached driverforge ${version} (${os}/${arch})"
   fi
 
   export PATH="${dest}:${PATH}"
-  anvil__log "anvil ${version} ready on PATH"
+  anvil__log "driverforge ${version} ready on PATH"
 }

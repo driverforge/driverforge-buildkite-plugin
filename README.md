@@ -1,21 +1,21 @@
 # anvil-buildkite-plugin
 
-Install the [Anvil CLI](https://github.com/driverforge/anvil-cli) onto a Buildkite agent and
+Install the [Driverforge CLI](https://github.com/driverforge/anvil-cli) onto a Buildkite agent and
 optionally run a target (`build`, …). The customer-facing way to build and package Control4
 drivers in a Buildkite pipeline.
 
-**Model:** the `environment` hook always installs `anvil` onto `PATH`; the `command` hook
+**Model:** the `environment` hook always installs `driverforge` onto `PATH`; the `command` hook
 then either runs a configured target or your step's own command.
 
 ## Usage
 
 ### Environment setup only
 
-`anvil` is put on `PATH`; the step's own `command:` does the work:
+`driverforge` is put on `PATH`; the step's own `command:` does the work:
 
 ```yaml
 steps:
-  - command: anvil build -c release
+  - command: driverforge build -c release
     plugins:
       - driverforge/anvil#v1.0.0:
           version: '1.4.0'        # pinned, or 'latest'
@@ -47,18 +47,18 @@ steps:
 | `deploy` | bool | Deploy after build. Mutually exclusive with `sync` |
 | `sync` | bool | Hot-sync after build. Mutually exclusive with `deploy` |
 | `args` | string | Extra raw args appended to the invocation (escape hatch) |
-| `cache-dir` | string | Per-agent download cache dir (default `~/.cache/anvil-buildkite`) |
+| `cache-dir` | string | Per-agent download cache dir (default `~/.cache/driverforge-buildkite`) |
 
 ## How it works
 
 The `environment` hook detects OS/arch → downloads the pinned release archive from
 `releases.driverforge.com` → **verifies the SHA-256 checksum** → caches it per-agent
-(`<cache-dir>/anvil/<version>/<arch>`) so repeat builds don't re-download → exports it onto
+(`<cache-dir>/driverforge/<version>/<arch>`) so repeat builds don't re-download → exports it onto
 `PATH`.
 
 The `command` hook replaces the step's command phase. With `command:` configured it runs
-`anvil <command>` with the mapped flags; otherwise it re-runs the step's own `command:`
-(with `anvil` already on `PATH`). Supported agents: Linux and macOS (`amd64` / `arm64`).
+`driverforge <command>` with the mapped flags; otherwise it re-runs the step's own `command:`
+(with `driverforge` already on `PATH`). Supported agents: Linux and macOS (`amd64` / `arm64`).
 
 ## Developing
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 # Run phase. Two modes:
-#   - command configured  -> run `anvil <command>` with the mapped flags.
-#   - no command          -> setup-only; run the step's own command (anvil is
+#   - command configured  -> run `driverforge <command>` with the mapped flags.
+#   - no command          -> setup-only; run the step's own command (driverforge is
 #                            already on PATH from the environment hook).
 #
 # A plugin command hook replaces the step's default command phase, so in

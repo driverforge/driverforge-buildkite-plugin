@@ -1,5 +1,5 @@
 #!/bin/bash
-# Map the plugin's BUILDKITE_PLUGIN_ANVIL_* config to an `anvil <command>` argv
+# Map the plugin's BUILDKITE_PLUGIN_ANVIL_* config to an `driverforge <command>` argv
 # (into the ANVIL_ARGS array) and run it.
 #
 # LOCKSTEP: the flag mapping here is kept identical to
@@ -60,6 +60,6 @@ anvil_build_args() {
 
 anvil_run() {
   anvil_build_args
-  printf '+ anvil %s\n' "${ANVIL_ARGS[*]}" >&2
-  exec anvil "${ANVIL_ARGS[@]}"
+  printf '+ driverforge %s\n' "${ANVIL_ARGS[*]}" >&2
+  exec driverforge "${ANVIL_ARGS[@]}"
 }

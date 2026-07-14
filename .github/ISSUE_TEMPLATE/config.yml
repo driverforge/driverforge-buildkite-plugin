@@ -2,4 +2,4 @@ blank_issues_enabled: false
 contact_links:
   - name: Anvil documentation
     url: https://docs.driverforge.dev
-    about: Using the Anvil CLI in CI — start here for usage questions.
+    about: Using the Driverforge CLI in CI — start here for usage questions.

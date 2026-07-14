@@ -1,5 +1,5 @@
 name: Anvil
-description: Install the Anvil CLI onto the agent (on PATH) and optionally run a target (build, …).
+description: Install the Driverforge CLI onto the agent (on PATH) and optionally run a target (build, …).
 author: https://github.com/driverforge
 requirements:
   - bash
@@ -36,5 +36,5 @@ configuration:
       description: Extra raw args appended to the invocation (escape hatch).
     cache-dir:
       type: string
-      description: Per-agent download cache dir (default ~/.cache/anvil-buildkite).
+      description: Per-agent download cache dir (default ~/.cache/driverforge-buildkite).
   additionalProperties: false
