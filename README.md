@@ -41,7 +41,9 @@ steps:
 | `project-dir` | string | Driver project path (`--project-dir` / `-p`) |
 | `configuration` | string | Build configuration (`--configuration` / `-c`) |
 | `increment` | string | Version bump: `major` \| `minor` \| `patch` |
+| `driver-version` | string | Stamp an absolute driver `<version>` (`--version`). Mutually exclusive with `increment` |
 | `encrypt` | bool | Force encryption on (`true`) or off (`false`); omit to keep the driver's setting |
+| `no-suffix` | bool | Build a named configuration under the naked driver name (`--no-suffix`); `false` forces suffixing back on |
 | `sourcemap` | bool | Emit a sourcemap (`--sourcemap` / `-s`) |
 | `unpack` | bool | Keep unpacked output (`--unpack` / `-u`) |
 | `deploy` | bool | Deploy after build. Mutually exclusive with `sync` |

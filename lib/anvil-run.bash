@@ -28,6 +28,19 @@ anvil_build_args() {
     *) ANVIL_ARGS+=("--increment=${BUILDKITE_PLUGIN_ANVIL_INCREMENT}") ;;
   esac
 
+  # driver-version: stamp an absolute <version> (driverforge build --version) —
+  # mutually exclusive with increment, mirroring the CLI.
+  if [ -n "${BUILDKITE_PLUGIN_ANVIL_DRIVER_VERSION:-}" ]; then
+    case "${BUILDKITE_PLUGIN_ANVIL_INCREMENT:-}" in
+      "" | false | no) : ;;
+      *)
+        printf 'anvil plugin: %s\n' "increment and driver-version are mutually exclusive" >&2
+        exit 1
+        ;;
+    esac
+    ANVIL_ARGS+=(--version "${BUILDKITE_PLUGIN_ANVIL_DRIVER_VERSION}")
+  fi
+
   # encrypt: omit = leave driver.xml as authored; true = force on; false = force off.
   # The CLI's --encrypt is a boolean (--encrypt / --encrypt=false), not a mode value.
   case "${BUILDKITE_PLUGIN_ANVIL_ENCRYPT:-}" in
@@ -36,6 +49,18 @@ anvil_build_args() {
     false | no | 0) ANVIL_ARGS+=(--encrypt=false) ;;
     *)
       printf 'anvil plugin: %s\n' "encrypt must be true or false (got '${BUILDKITE_PLUGIN_ANVIL_ENCRYPT}')" >&2
+      exit 1
+      ;;
+  esac
+
+  # no-suffix: omit = suffix named configurations as usual; true = build under the
+  # naked driver name; false = force suffixing back on (boolean, like --encrypt).
+  case "${BUILDKITE_PLUGIN_ANVIL_NO_SUFFIX:-}" in
+    "") : ;;
+    true | yes | 1) ANVIL_ARGS+=(--no-suffix) ;;
+    false | no | 0) ANVIL_ARGS+=(--no-suffix=false) ;;
+    *)
+      printf 'anvil plugin: %s\n' "no-suffix must be true or false (got '${BUILDKITE_PLUGIN_ANVIL_NO_SUFFIX}')" >&2
       exit 1
       ;;
   esac

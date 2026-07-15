@@ -20,9 +20,15 @@ configuration:
     increment:
       type: string
       description: "major | minor | patch, or \"true\" for the CLI default."
+    driver-version:
+      type: string
+      description: Stamp an absolute driver <version> for this build. Mutually exclusive with increment.
     encrypt:
       type: boolean
       description: Force script encryption on (true) or off (false); omit to keep the driver's authored setting.
+    no-suffix:
+      type: boolean
+      description: Build a named configuration under the naked driver name (no artifact/display-name suffix); false forces suffixing back on.
     sourcemap:
       type: boolean
     unpack:
