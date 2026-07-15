@@ -33,10 +33,6 @@ configuration:
       type: boolean
     unpack:
       type: boolean
-    deploy:
-      type: boolean
-    sync:
-      type: boolean
     args:
       type: string
       description: Extra raw args appended to the invocation (escape hatch).

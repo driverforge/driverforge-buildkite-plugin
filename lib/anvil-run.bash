@@ -67,13 +67,6 @@ anvil_build_args() {
 
   if anvil__is_true "${BUILDKITE_PLUGIN_ANVIL_SOURCEMAP:-}"; then ANVIL_ARGS+=(--sourcemap); fi
   if anvil__is_true "${BUILDKITE_PLUGIN_ANVIL_UNPACK:-}"; then ANVIL_ARGS+=(--unpack); fi
-  if anvil__is_true "${BUILDKITE_PLUGIN_ANVIL_DEPLOY:-}"; then ANVIL_ARGS+=(--deploy); fi
-  if anvil__is_true "${BUILDKITE_PLUGIN_ANVIL_SYNC:-}"; then ANVIL_ARGS+=(--sync); fi
-
-  if anvil__is_true "${BUILDKITE_PLUGIN_ANVIL_DEPLOY:-}" && anvil__is_true "${BUILDKITE_PLUGIN_ANVIL_SYNC:-}"; then
-    printf 'anvil plugin: %s\n' "deploy and sync are mutually exclusive" >&2
-    exit 1
-  fi
 
   # args escape hatch: appended verbatim (intentional word-split).
   if [ -n "${BUILDKITE_PLUGIN_ANVIL_ARGS:-}" ]; then

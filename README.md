@@ -46,10 +46,12 @@ steps:
 | `no-suffix` | bool | Build a named configuration under the naked driver name (`--no-suffix`); `false` forces suffixing back on |
 | `sourcemap` | bool | Emit a sourcemap (`--sourcemap` / `-s`) |
 | `unpack` | bool | Keep unpacked output (`--unpack` / `-u`) |
-| `deploy` | bool | Deploy after build. Mutually exclusive with `sync` |
-| `sync` | bool | Hot-sync after build. Mutually exclusive with `deploy` |
 | `args` | string | Extra raw args appended to the invocation (escape hatch) |
 | `cache-dir` | string | Per-agent download cache dir (default `~/.cache/driverforge-buildkite`) |
+
+To ship after building, set `command: deploy` or `command: sync` instead of
+`build` — shipping is its own CLI command that builds first, so there is no
+`deploy`/`sync` option.
 
 ## How it works
 
