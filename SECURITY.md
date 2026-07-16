@@ -11,7 +11,7 @@ Please include a description, reproduction steps, and the affected version where
 
 ## Scope
 
-This policy covers the Anvil **Buildkite plugin** in this repository — the plugin that installs the `driverforge` CLI onto a Buildkite agent and optionally runs it. The plugin ships **no credentials of its own**: it downloads a pinned, checksum-verified `driverforge` release from Driverforge's public release storage and puts it on `PATH`. The `driverforge` CLI itself, the Anvil backend/ingestion, and the agent are separate and out of scope here.
+This policy covers the Driverforge **Buildkite plugin** in this repository — the plugin that installs the `driverforge` CLI onto a Buildkite agent and optionally runs it. The plugin ships **no credentials of its own**: it downloads a pinned, checksum-verified `driverforge` release from Driverforge's public release storage and puts it on `PATH`. The `driverforge` CLI itself, the Anvil backend/ingestion, and the agent are separate and out of scope here.
 
 ## Supported versions
 

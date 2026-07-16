@@ -10,11 +10,11 @@ set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-# shellcheck source=lib/anvil-run.bash disable=SC1091
-source "${DIR}/lib/anvil-run.bash"
+# shellcheck source=lib/driverforge-run.bash disable=SC1091
+source "${DIR}/lib/driverforge-run.bash"
 
-if [ -n "${BUILDKITE_PLUGIN_ANVIL_COMMAND:-}" ]; then
-  anvil_run
+if [ -n "${BUILDKITE_PLUGIN_DRIVERFORGE_COMMAND:-}" ]; then
+  driverforge_run
 elif [ -n "${BUILDKITE_COMMAND:-}" ]; then
   eval "${BUILDKITE_COMMAND}"
 else

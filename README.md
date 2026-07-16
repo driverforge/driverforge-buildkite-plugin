@@ -1,6 +1,6 @@
-# anvil-buildkite-plugin
+# driverforge-buildkite-plugin
 
-Install the [Driverforge CLI](https://github.com/driverforge/anvil-cli) onto a Buildkite agent and
+Install the [Driverforge CLI](https://docs.driverforge.dev/cli/overview) onto a Buildkite agent and
 optionally run a target (`build`, …). The customer-facing way to build and package Control4
 drivers in a Buildkite pipeline.
 
@@ -17,7 +17,7 @@ then either runs a configured target or your step's own command.
 steps:
   - command: driverforge build -c release
     plugins:
-      - driverforge/anvil#v1.0.0:
+      - driverforge/driverforge#v1.2.0:
           version: '1.4.0'        # pinned, or 'latest'
 ```
 
@@ -26,7 +26,7 @@ steps:
 ```yaml
 steps:
   - plugins:
-      - driverforge/anvil#v1.0.0:
+      - driverforge/driverforge#v1.2.0:
           command: build
           configuration: release
           increment: patch
@@ -68,7 +68,7 @@ The `command` hook replaces the step's command phase. With `command:` configured
 
 ```bash
 shellcheck hooks/* lib/*.bash
-docker run --rm -v "$PWD:/plugin:ro" buildkite/plugin-linter --id driverforge/anvil
+docker run --rm -v "$PWD:/plugin:ro" buildkite/plugin-linter --id driverforge/driverforge
 docker run --rm -v "$PWD:/plugin:ro" buildkite/plugin-tester    # BATS hook tests
 ```
 

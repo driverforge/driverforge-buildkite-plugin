@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in the Anvil Buildkite plugin! Contributions are welcome under the project's [MIT license](LICENSE).
+Thanks for your interest in the Driverforge Buildkite plugin! Contributions are welcome under the project's [MIT license](LICENSE).
 
 ## How this repository works
 
@@ -51,7 +51,7 @@ The plugin is shell-based, with [BATS](https://github.com/bats-core/bats-core) h
 
 ```sh
 shellcheck hooks/* lib/*.bash
-docker run --rm -v "$PWD:/plugin:ro" buildkite/plugin-linter --id driverforge/anvil
+docker run --rm -v "$PWD:/plugin:ro" buildkite/plugin-linter --id driverforge/driverforge
 docker run --rm -v "$PWD:/plugin:ro" buildkite/plugin-tester
 ```
 

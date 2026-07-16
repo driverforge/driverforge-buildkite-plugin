@@ -7,7 +7,7 @@ set -euo pipefail
 
 DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
-# shellcheck source=lib/anvil-install.bash disable=SC1091
-source "${DIR}/lib/anvil-install.bash"
+# shellcheck source=lib/driverforge-install.bash disable=SC1091
+source "${DIR}/lib/driverforge-install.bash"
 
-anvil_install
+driverforge_install

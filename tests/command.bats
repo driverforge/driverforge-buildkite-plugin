@@ -13,8 +13,8 @@ teardown() {
 }
 
 @test "runs the driverforge target when command is configured" {
-  export BUILDKITE_PLUGIN_ANVIL_COMMAND=build
-  export BUILDKITE_PLUGIN_ANVIL_CONFIGURATION=release
+  export BUILDKITE_PLUGIN_DRIVERFORGE_COMMAND=build
+  export BUILDKITE_PLUGIN_DRIVERFORGE_CONFIGURATION=release
 
   stub driverforge 'build --configuration release : echo ran-driverforge-build'
 

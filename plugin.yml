@@ -1,4 +1,4 @@
-name: Anvil
+name: Driverforge
 description: Install the Driverforge CLI onto the agent (on PATH) and optionally run a target (build, …).
 author: https://github.com/driverforge
 requirements:
