@@ -1,6 +1,6 @@
 # driverforge-buildkite-plugin
 
-Install the [Driverforge CLI](https://docs.driverforge.dev/cli/overview) onto a Buildkite agent and
+Install the [Driverforge CLI](https://go.driverforge.com/cli) onto a Buildkite agent and
 optionally run a target (`build`, …). The customer-facing way to build and package Control4
 drivers in a Buildkite pipeline.
 

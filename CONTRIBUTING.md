@@ -59,4 +59,4 @@ Because this repo is a public mirror, **we don't merge PRs on GitHub directly** 
 
 ## Questions?
 
-For help **using** the Driverforge CLI in CI, see the [docs](https://docs.driverforge.dev). Please keep issues here for bugs and feature requests.
+For help **using** the Driverforge CLI in CI, see the [docs](https://go.driverforge.com/docs). Please keep issues here for bugs and feature requests.
