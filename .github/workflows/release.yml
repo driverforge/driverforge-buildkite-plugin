@@ -1,0 +1,110 @@
+# Cut a release of this plugin.
+#
+# There is no build artifact: a release is a git tag plus a GitHub Release, and
+# consumers pin `driverforge/driverforge#v1.0.0`. A moving major tag lets them
+# pin `#v1` instead, so by default the release moves it.
+#
+# Run it from the Actions tab with the version to release. The commit released
+# is the one the workflow runs on, which is the tip of main unless you choose
+# another ref.
+name: Release
+
+run-name: Release v${{ inputs.version }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Semver to release (e.g. 1.0.0)'
+        required: true
+        type: string
+      update-major:
+        description: 'Move the v<major> tag to this release'
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      VERSION: ${{ inputs.version }}
+    steps:
+      - name: Validate version (semver X.Y.Z)
+        run: |
+          if ! printf '%s' "$VERSION" | grep -qE '^[0-9]+\.[0-9]+\.[0-9]+$'; then
+            echo "::error::version '$VERSION' is not semver X.Y.Z"; exit 1
+          fi
+
+      # Full history: the changelog covers everything since the previous tag.
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Check the release does not already exist
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if gh release view "v${VERSION}" >/dev/null 2>&1; then
+            echo "::error::release v${VERSION} already exists"; exit 1
+          fi
+
+      - name: Install git-cliff
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          VER=2.13.1
+          ASSET="git-cliff-${VER}-x86_64-unknown-linux-gnu.tar.gz"
+          curl -sSL -o "$ASSET" \
+            "https://github.com/orhun/git-cliff/releases/download/v${VER}/${ASSET}"
+          echo "e716cce3a07dda41b1e370d6afbd7a59eb3d4739509fb7856aeec8da2be28c0396584e29e106141c1a1c535c1827dbc1f60417524f5cfb1da9e11f700bd00f30  ${ASSET}" \
+            | sha512sum -c -
+          tar -xzf "$ASSET"
+          sudo mv "git-cliff-${VER}/git-cliff" /usr/local/bin/git-cliff
+          git-cliff --version
+
+      - name: Generate release notes
+        id: changelog
+        run: |
+          set -euo pipefail
+          FRAGMENT="$RUNNER_TEMP/notes.md"
+          git-cliff --config .github/cliff.toml \
+            --unreleased --tag "v${VERSION}" --strip all \
+            -o "$FRAGMENT"
+          # A compare link when there is a previous release to compare with.
+          PREV_TAG="$(git describe --tags --abbrev=0 --match 'v[0-9]*' 'HEAD^' 2>/dev/null || true)"
+          if [ -n "$PREV_TAG" ]; then
+            printf '\n**Full Changelog**: https://github.com/%s/compare/%s...v%s\n' \
+              "$GITHUB_REPOSITORY" "$PREV_TAG" "$VERSION" >> "$FRAGMENT"
+          fi
+          echo "fragment=${FRAGMENT}" >> "$GITHUB_OUTPUT"
+          echo "::group::release notes"; cat "$FRAGMENT"; echo "::endgroup::"
+
+      # gh creates the tag at --target; GitHub attaches the source archives.
+      - name: Cut the GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          FRAGMENT: ${{ steps.changelog.outputs.fragment }}
+        run: |
+          set -euo pipefail
+          gh release create "v${VERSION}" \
+            --target "$GITHUB_SHA" \
+            --title "v${VERSION}" \
+            --notes-file "$FRAGMENT"
+          echo "released v${VERSION} @ ${GITHUB_SHA}"
+
+      - name: Move the major tag
+        if: ${{ inputs.update-major }}
+        run: |
+          set -euo pipefail
+          MAJOR="v${VERSION%%.*}"
+          git tag -f "$MAJOR" "$GITHUB_SHA"
+          git push -f origin "$MAJOR"
+          echo "moved ${MAJOR} -> ${GITHUB_SHA}"
