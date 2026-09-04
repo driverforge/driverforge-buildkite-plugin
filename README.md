@@ -46,6 +46,7 @@ steps:
 | `no-suffix` | bool | Build a named configuration under the naked driver name (`--no-suffix`); `false` forces suffixing back on |
 | `sourcemap` | bool | Emit a sourcemap (`--sourcemap` / `-s`) |
 | `unpack` | bool | Keep unpacked output (`--unpack` / `-u`) |
+| `warnings-as-errors` | bool | Fail the build before packaging if it emits any warning (`--warnings-as-errors`); recommended for CI |
 | `args` | string | Extra raw args appended to the invocation (escape hatch) |
 | `cache-dir` | string | Per-agent download cache dir (default `~/.cache/driverforge-buildkite`) |
 

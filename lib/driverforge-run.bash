@@ -67,6 +67,7 @@ driverforge_build_args() {
 
   if driverforge__is_true "${BUILDKITE_PLUGIN_DRIVERFORGE_SOURCEMAP:-}"; then DRIVERFORGE_ARGS+=(--sourcemap); fi
   if driverforge__is_true "${BUILDKITE_PLUGIN_DRIVERFORGE_UNPACK:-}"; then DRIVERFORGE_ARGS+=(--unpack); fi
+  if driverforge__is_true "${BUILDKITE_PLUGIN_DRIVERFORGE_WARNINGS_AS_ERRORS:-}"; then DRIVERFORGE_ARGS+=(--warnings-as-errors); fi
 
   # args escape hatch: appended verbatim (intentional word-split).
   if [ -n "${BUILDKITE_PLUGIN_DRIVERFORGE_ARGS:-}" ]; then

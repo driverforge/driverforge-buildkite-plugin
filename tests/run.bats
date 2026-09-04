@@ -37,6 +37,20 @@ setup() {
   [ "${DRIVERFORGE_ARGS[*]}" = "build --project-dir ./driver --sourcemap --unpack" ]
 }
 
+@test "warnings-as-errors=true emits the bare flag" {
+  export BUILDKITE_PLUGIN_DRIVERFORGE_COMMAND=build
+  export BUILDKITE_PLUGIN_DRIVERFORGE_WARNINGS_AS_ERRORS=true
+  driverforge_build_args
+  [ "${DRIVERFORGE_ARGS[*]}" = "build --warnings-as-errors" ]
+}
+
+@test "warnings-as-errors=false emits nothing" {
+  export BUILDKITE_PLUGIN_DRIVERFORGE_COMMAND=build
+  export BUILDKITE_PLUGIN_DRIVERFORGE_WARNINGS_AS_ERRORS=false
+  driverforge_build_args
+  [ "${DRIVERFORGE_ARGS[*]}" = "build" ]
+}
+
 @test "args escape hatch is appended verbatim" {
   export BUILDKITE_PLUGIN_DRIVERFORGE_COMMAND=build
   export BUILDKITE_PLUGIN_DRIVERFORGE_ARGS="--future-flag x"

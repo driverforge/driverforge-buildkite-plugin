@@ -33,6 +33,9 @@ configuration:
       type: boolean
     unpack:
       type: boolean
+    warnings-as-errors:
+      type: boolean
+      description: Fail the build (before packaging) if it emits any warning (driverforge build --warnings-as-errors). Recommended for CI.
     args:
       type: string
       description: Extra raw args appended to the invocation (escape hatch).
