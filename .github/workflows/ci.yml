@@ -1,6 +1,6 @@
 name: CI
 
-# Public-mirror CI for the Buildkite plugin. Published from anvil-ci's
+# Public-mirror CI for the Buildkite plugin. Published from the private monorepo's
 # driverforge-buildkite-plugin/.github/workflows/ — runs on the mirror via GitHub
 # Actions (we don't operate Buildkite). The official plugin-linter and
 # plugin-tester run in Docker, which works fine on GitHub runners.
